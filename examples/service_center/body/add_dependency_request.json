@@ -1,0 +1,18 @@
+{
+    "dependencies": [
+        {
+            "consumer": {
+                "appId": "TestApp8",
+                "serviceName": "Test8",
+                "version": "1.0.0"
+            },
+            "providers": [
+                {
+		                "serviceName": "*",
+		                "appId": "TestApp3",
+		                "version":"1.0.0"
+                }
+            ]
+        }
+    ]
+}

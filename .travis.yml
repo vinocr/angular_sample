@@ -1,0 +1,43 @@
+language: go
+
+sudo: required
+
+services:
+  - docker
+
+go:
+  - 1.8.3
+
+before_install:
+  - go get github.com/mattn/goveralls
+  - go get golang.org/x/tools/cmd/cover
+  - go get github.com/tedsuo/rata
+  - go get github.com/onsi/ginkgo
+  - go get github.com/onsi/ginkgo/config		
+  - go get github.com/onsi/ginkgo/types
+  - go get github.com/onsi/ginkgo/ginkgo
+  - go get github.com/astaxie/beego
+  - go get github.com/onsi/gomega
+  - go get github.com/onsi/gomega/gbytes		
+  - go get github.com/FiloSottile/gvt
+  
+before_script:
+  - mkdir -p $HOME/gopath/src/github.com/ServiceComb/service-center
+  - rsync -az ${TRAVIS_BUILD_DIR}/ $HOME/gopath/src/github.com/ServiceComb/service-center/
+  - export TRAVIS_BUILD_DIR=$HOME/gopath/src/github.com/ServiceComb/service-center
+  - cd $HOME/gopath/src/github.com/ServiceComb/service-center
+  - gvt restore
+  
+install: true
+
+jobs:
+  include:
+    - stage: Building Service Center
+      script: CGO_ENABLED=0 GO_EXTLINK_ENABLED=0 go build --ldflags '-w -extldflags "-static"' -o servicecenter
+    - stage: Unit Testing
+      script: bash -x scripts/ut_test_in_docker.sh && $HOME/gopath/bin/goveralls -coverprofile=coverage.txt -service=travis-ci
+    - stage: Integration Testing
+      script: bash -x scripts/integration_test.sh    
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

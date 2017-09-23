@@ -1,0 +1,31 @@
+GET /registry/v3/microservices/349524856cf811e7b7bc286ed488ff40/instances/838942c26cf911e7b7bc286ed488ff40 HTTP/1.1
+Host: 127.0.0.1:30100
+X-tenant-name: default
+Content-Type: application/json
+X-ConsumerId: 349524856cf811e7b7bc286ed488ff40
+Cache-Control: no-cache
+Postman-Token: f1179ffa-5156-88f2-04c6-bd41b9312928
+
+{
+    "instance": {
+        "instanceId": "838942c26cf911e7b7bc286ed488ff40",
+        "serviceId": "349524856cf811e7b7bc286ed488ff40",
+        "endpoints": [
+            "cse://127.0.0.1:9986"
+        ],
+        "hostName": "cse",
+        "status": "UP",
+        "properties": {
+            "_TAGS": "A,B",
+            "attr1": "a",
+            "nodeIP": "one"
+        },
+        "healthCheck": {
+            "mode": "push",
+            "interval": 30,
+            "times": 2
+        },
+        "timestamp": "1500520456",
+        "environment":"production"
+    }
+}

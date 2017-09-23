@@ -1,0 +1,22 @@
+bin/
+output
+**/*.coverprofile
+
+service-center.iml
+.idea/
+**/*junit.xml
+**/*.exe
+
+vendor/**
+!vendor/manifest
+!vendor/manifest/github.com/didip/tollbooth
+!vendor/manifest/github.com/grpc-ecosystem/go-grpc-prometheus
+!vendor/manifest/github.com/grpc-ecosystem/grpc-gateway
+
+# for local UT
+server/service/conf/
+etc/data
+conf/
+integration/conf
+frontend/bower_components/
+frontend/node_modules

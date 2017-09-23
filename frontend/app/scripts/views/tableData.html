@@ -1,0 +1,73 @@
+<!--
+Copyright 2017 Huawei Technologies Co., Ltd
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<md-content>
+	<md-card>
+        <md-toolbar class="table-header">
+            <div class="md-toolbar-tools">
+                {{heading | translate}}
+                <span flex></span>
+                <md-button ng-if="(enableSearch && data && (data.length > 0))" class="md-icon-button" ng-click="searchOpen()" ng-hide="showSearch" aria-label="{{ 'search' | translate }}" title="{{ 'search' | translate }}">
+                    <i class="fa fa-search fa-lg"></i>
+                </md-button>
+                <md-button ng-if="refresh" class="md-icon-button" ng-click="reload()" aria-label="{{ 'refresh' | translate }}" title="{{ 'refresh' | translate }}">
+                    <i class="fa fa-refresh fa-lg"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-toolbar class="md-table-toolbar md-raised md-default" ng-if="showSearch">
+          <div class="md-toolbar-tools">
+            <form flex name="filter.form" class="no-padding" >
+              <input id="search" class="form-control" type="search" ng-model="filter.search" autofocus 
+              placeholder="{{ 'search' | translate }}" autocomplete="off">
+            </form>
+            <md-button class="md-icon-button"  aria-label="{{ 'close' | translate }}" title="{{ 'close' | translate }}">
+              <md-icon><i class="fa fa-close fa-lg" ng-click="searchClose()" ></i></md-icon>
+            </md-button>
+          </div>
+        </md-toolbar>
+        <fetching-no-data data="appList" info="apiInfo"></fetching-no-data>
+        <md-table-container  ng-if="appList == ''" >
+            <table data-md-table>
+                <thead md-head>
+                    <tr md-row>
+                        <th md-column ng-repeat="header in headers">
+                            {{ header.key | translate }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr md-row md-select="appData" id="target" data-ng-repeat="appData in data | filter: filter.search | orderBy: paginationQuery.order | limitTo: paginationQuery.limit : (paginationQuery.page - 1) * paginationQuery.limit">
+                        <td md-cell ng-repeat="(key, value) in appData">
+
+                            <span ng-if="key == 'serviceName' && key != 'address'">
+                                <a ui-sref="sc.info.instance({serviceId:'{{appData.serviceId}}'})">{{appData.serviceName}}</a>
+                            </span>
+
+                            <span ng-if="key != 'serviceId' && key != 'serviceName' && key != 'address'">
+                        		{{value}}
+                        	</span>
+
+                            <span ng-if="key == 'address'">
+                                <span ng-repeat="endpoints in value track by $index">
+                                    <li>{{endpoints}}</li>
+                                </span>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+
+	</md-card>
+</md-content>
